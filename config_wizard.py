@@ -63,7 +63,7 @@ def run_setup_wizard():
     # 1. Campo de Senha (Obrigatório)
     lbl_pass = tk.Label(
         frame,
-        text="Senha do Atendente (Obrigatório):",
+        text="Senha de Administrador (Obrigatório):",
         fg="white",
         bg="#2b2b2b",
         font=("Segoe UI", 9, "bold"),
