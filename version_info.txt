@@ -18,7 +18,7 @@ VSVersionInfo(
                     StringStruct(
                         "FileDescription", "AudioLocker - Controle de Volume"
                     ),
-                    StringStruct("FileVersion", "1.0.0.0"),
+                    StringStruct("FileVersion", "1.0.0.1"),
                     StringStruct("InternalName", "AudioLocker"),
                     StringStruct(
                         "LegalCopyright",
@@ -26,7 +26,7 @@ VSVersionInfo(
                     ),
                     StringStruct("OriginalFilename", "AudioLocker.exe"),
                     StringStruct("ProductName", "AudioLocker"),
-                    StringStruct("ProductVersion", "1.0.0.0"),
+                    StringStruct("ProductVersion", "1.0.0.1"),
                 ],
             )
         ]),
