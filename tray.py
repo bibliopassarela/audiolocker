@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw
 import pystray
 from pystray import MenuItem as item
 from audio import AudioController
-
+import webbrowser
 
 class AudioLockerTray:
 
@@ -27,6 +27,7 @@ class AudioLockerTray:
         menu = (
             item("Status: BLOQUEADO", lambda: None, enabled=False),
             item("Desbloquear Áudio", self._on_unlock_click),
+            item("Ajuda", self._open_website),  # Link direto para o site do app
             item("Sair", self._on_exit_click),
         )
 
@@ -39,6 +40,9 @@ class AudioLockerTray:
         draw = ImageDraw.Draw(image)
         draw.ellipse((8, 8, 56, 56), fill=color)
         return image
+
+    def _open_website(self, icon, item):
+        webbrowser.open("https://klebersilva.dev.br/audiolocker")
 
     def _update_tray_menu(self):
         if self.locked:
@@ -58,6 +62,7 @@ class AudioLockerTray:
                 "Desbloquear Áudio" if self.locked else "Bloquear Agora",
                 self._toggle_lock,
             ),
+            item("Ajuda", self._open_website),  # Link direto para o site do app
             item("Sair", self._on_exit_click),
         )
 
