@@ -1,27 +1,34 @@
 from pycaw.pycaw import AudioUtilities
 
-
 class AudioController:
-    """Responsável por controlar o áudio do Windows."""
-
     def __init__(self):
-        self._endpoint = AudioUtilities.GetSpeakers().EndpointVolume
+        self._endpoint = None
+        self._get_volume_endpoint()
 
-    def get_volume(self):
-        """Retorna o volume atual em porcentagem."""
-        return round(self._endpoint.GetMasterVolumeLevelScalar() * 100)
+    def _get_volume_endpoint(self):
+        """Tenta obter o controle de volume. Se não houver dispositivo, retorna None."""
+        try:
+            speakers = AudioUtilities.GetSpeakers()
+            self._endpoint = speakers.EndpointVolume
+            return self._endpoint
+        except Exception:
+            self._endpoint = None
+            return None
 
-    def set_volume(self, percent):
-        """Define o volume em porcentagem."""
-        percent = max(0, min(100, percent))
-        self._endpoint.SetMasterVolumeLevelScalar(percent / 100, None)
+    def enforce_limit(self, max_volume):
+        """Garante que o volume não ultrapasse o limite definido."""
+        # Se não tínhamos um endpoint válido, tenta buscar novamente
+        if not self._endpoint:
+            if not self._get_volume_endpoint():
+                return  # Nenhum áudio conectado no momento, ignora a execução
 
-    def enforce_limit(self, limit):
-        """Garante que o volume não ultrapasse o limite."""
-        current = self.get_volume()
+        try:
+            # Converte porcentagem para a escala do pycaw (0.0 a 1.0)
+            target = max_volume / 100.0
+            current_vol = self._endpoint.GetMasterVolumeLevelScalar()
 
-        if current > limit:
-            self.set_volume(limit)
-            return True, current
-
-        return False, current
+            if current_vol > target:
+                self._endpoint.SetMasterVolumeLevelScalar(target, None)
+        except Exception:
+            # Caso o dispositivo tenha sido desconectado/desabilitado durante o uso
+            self._endpoint = None

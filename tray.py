@@ -178,7 +178,11 @@ class AudioLockerTray:
                 else:
                     self._update_tray_menu()
             else:
-                self.audio.enforce_limit(self.max_volume)
+                # Tenta aplicar o limite; se não houver dispositivo, o app silencia a exceção e não trava
+                try:
+                    self.audio.enforce_limit(self.max_volume)
+                except Exception:
+                    pass                
 
             time.sleep(self.check_interval)
 
