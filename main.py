@@ -17,6 +17,6 @@ if __name__ == "__main__":
             max_volume=config["MAX_VOLUME"],
             check_interval=CHECK_INTERVAL,
             unlock_time=config["UNLOCK_TIME"],
-            password=config["PASSWORD"],
+            password=config.get("PASSWORD_HASH") or config.get("PASSWORD"),
         )
         app.run()
